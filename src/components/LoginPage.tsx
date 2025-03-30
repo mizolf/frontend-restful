@@ -115,25 +115,27 @@ const LoginPage: React.FC<LoginPageProps> = ({ isLoggedIn, setIsLoggedIn }: Logi
   }
 
   return (
-    <div className='flex flex-col w-full h-svh items-center justify-center'>
-      <h2 className="text-2xl font-semibold text-center mb-6">{login ? 'Sign in' : 'Create an Account'}</h2>
-      {login ? (
-        <LoginForm setUsername={setUsername} setPassword={setPassword} handleLoginSubmit={handleLoginSubmit} />
-      ) : (
-        <RegisterForm setEmail={setEmail} setUsername={setUsername} setPassword={setPassword} handleRegisterSubmit={handleRegisterSubmit} />
-      )}
+    <div className='flex items-center justify-center h-svh'>
+      <div className='flex flex-col w-[500px] h-[500px] items-center bg-white justify-center shadow-lg rounded-xl shadow-gray-400'>
+        <h2 className="text-2xl font-semibold text-center mb-6">{login ? 'Sign in' : 'Create an Account'}</h2>
+        {login ? (
+          <LoginForm setUsername={setUsername} setPassword={setPassword} handleLoginSubmit={handleLoginSubmit} />
+        ) : (
+          <RegisterForm setEmail={setEmail} setUsername={setUsername} setPassword={setPassword} handleRegisterSubmit={handleRegisterSubmit} />
+        )}
 
-    <div className="mt-4 text-center">
-        <p className="text-gray-600 text-sm">
-        {login ? "Don't have an account?" : "Already have an account?"}
-        <button
-            className="text-blue-600 ml-1 cursor-pointer hover:underline"
-            onClick={() => setLogin(!login)}
-        >
-            {login ? 'Create new account' : 'Sign in'}
-        </button>
-        </p>
-    </div>
+        <div className="mt-4 text-center">
+            <p className="text-gray-600 text-sm">
+            {login ? "Don't have an account?" : "Already have an account?"}
+            <button
+                className="text-blue-600 ml-1 cursor-pointer hover:underline"
+                onClick={() => setLogin(!login)}
+            >
+                {login ? 'Create new account' : 'Sign in'}
+            </button>
+            </p>
+        </div>
+      </div>
     </div>
   );
 };
