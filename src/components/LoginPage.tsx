@@ -2,6 +2,7 @@ import * as React from 'react';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
 import { useState } from 'react';
+import HomePage from './HomePage';
 
 interface LoginCredentials {
   username: string;
@@ -104,13 +105,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ isLoggedIn, setIsLoggedIn }: Logi
 
   if (isLoggedIn) {
     return (
-      <div className='flex flex-col w-full h-svh items-center justify-center'>
-        <h1 className='font-bold text-2xl'>Naslovna</h1>
-        <p className='text-lg'>Welcome, {username}!</p>
-        <button onClick={handleLogout} className='border-none bg-blue-400 p-1.5 w-min cursor-pointer'>
-          Logout
-        </button>
-      </div>
+      <HomePage username={username}/>
     );
   }
 
