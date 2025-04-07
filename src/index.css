@@ -24,14 +24,14 @@
   @apply w-full p-3 border-none rounded-lg bg-gray-100 inset-shadow-2xs shadow-gray-500 outline-transparent focus:bg-white focus:outline-blue-500 transition-colors duration-300 ease-in-out;
 }
 
-input[type="text"] {
+.search-input {
   @apply w-full max-w-[500px] p-2.5 text-lg border-2 border-gray-300 rounded-full outline-none transition-all duration-300 ease-in-out;
 }
 
-input[type="text"]:focus {
+.search-input:focus {
   @apply border-blue-500 shadow-md shadow-blue-300;
 }
 
-input[type="text"]::placeholder {
+.search-input::placeholder {
   @apply text-gray-400 italic;
 }

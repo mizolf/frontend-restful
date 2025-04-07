@@ -46,13 +46,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ isLoggedIn, setIsLoggedIn }: Logi
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await logoutUser();
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
+
 
   const loginUser = async (credentials: LoginCredentials) => {
     try {
@@ -65,6 +59,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ isLoggedIn, setIsLoggedIn }: Logi
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Login error");
+
 
       return data;
     } catch (error) {
@@ -89,6 +84,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ isLoggedIn, setIsLoggedIn }: Logi
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   const logoutUser = async () => {
     try {
       await fetch('http://localhost:5500/user/logout', {
@@ -102,6 +105,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ isLoggedIn, setIsLoggedIn }: Logi
       throw new Error(`Logout request failed: ${error}`);
     }
   };
+
+
 
   if (isLoggedIn) {
     return (

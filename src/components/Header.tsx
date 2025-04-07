@@ -2,7 +2,11 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 
-const Header = () => {
+interface HeaderProps{
+  isLoggedIn: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({isLoggedIn}: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -22,11 +26,23 @@ const Header = () => {
           <li className='header-item'>Found items</li>
         </ul>
       </nav>
-      
-      <div className='hidden md:flex gap-2.5'>
-        <button className='header-btn-signin'>Sign In</button>
-        <button className='header-btn-signup'>Sign Up</button>
-      </div>
+
+      {isLoggedIn ? (
+        <div className="hidden md:flex profile-icon flex-row items-center">
+          <span className='text-gray text-md font-bold'>Profile</span>
+          <button className='mx-2 cursor-pointer'>
+            <img src="profile-icon.png" alt="Profile"/>
+          </button>
+          <button className='h-[32px] w-[32px] cursor-pointer' >
+            <img src="logout.png" alt="Profile"/>
+          </button>
+        </div>
+      ) : (
+        <div className='hidden md:flex gap-2.5'>
+          <button className='header-btn-signin'>Sign In</button>
+          <button className='header-btn-signup'>Sign Up</button>
+        </div>
+      )}
     </header>
   );
 };

@@ -55,7 +55,8 @@ const HomePage: React.FC<HomePageProps> = ({username}: HomePageProps) => {
                     type="text" 
                     placeholder="Search.." 
                     onChange={handleInputChange} 
-                    value={searchTerm}/>
+                    value={searchTerm}
+                    className='search-input'/>
 
 
                 <div className='flex flex-row w-full gap-7 mt-10 max-md:flex-col max-md:gap-5'>

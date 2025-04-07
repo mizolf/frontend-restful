@@ -8,10 +8,12 @@ import { useState } from 'react';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+
   
   return (
     <>
-      <Header />
+      <Header isLoggedIn={isLoggedIn}/>
       <LoginPage isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
     </>
   )
