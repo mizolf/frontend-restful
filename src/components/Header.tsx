@@ -4,9 +4,10 @@ import { Menu, X } from 'lucide-react';
 
 interface HeaderProps{
   isLoggedIn: boolean;
+  handleLogout: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({isLoggedIn}: HeaderProps) => {
+const Header: React.FC<HeaderProps> = ({isLoggedIn, handleLogout}: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -33,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({isLoggedIn}: HeaderProps) => {
           <button className='mx-2 cursor-pointer'>
             <img src="profile-icon.png" alt="Profile"/>
           </button>
-          <button className='h-[32px] w-[32px] cursor-pointer' >
+          <button className='h-[32px] w-[32px] cursor-pointer' onClick={handleLogout}>
             <img src="logout.png" alt="Profile"/>
           </button>
         </div>
