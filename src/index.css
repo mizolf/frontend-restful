@@ -35,3 +35,7 @@
 .search-input::placeholder {
   @apply text-gray-400 italic;
 }
+
+.primary-button{
+  @apply p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition cursor-pointer;
+}

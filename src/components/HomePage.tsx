@@ -2,6 +2,7 @@ import React from 'react'
 import Post from './Post'
 import { useState, useEffect } from 'react'
 import { useDebounce } from 'react-use'
+import PostModal from './PostModal';
  
 interface PostType {
     _id: string;
@@ -23,6 +24,7 @@ const HomePage: React.FC<HomePageProps> = ({username}: HomePageProps) => {
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [filteredPosts, setFilteredPosts] = useState<PostType[]>([]);
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(searchTerm);
+    const [titleValue, setTitleValue] = useState<string>("");
 
     useDebounce(() => {
         setDebouncedSearchTerm(searchTerm);
@@ -46,10 +48,13 @@ const HomePage: React.FC<HomePageProps> = ({username}: HomePageProps) => {
         setSearchTerm(e.target.value);
     }
 
+
+
     return (
         <div className='flex flex-col h-svh items-center'>
-            <div className='flex flex-col w-[1200px] items-center p-5 max-[1199px]:w-full '>
-                <h1 className='text-gray text-4xl font-bold mb-5'>Welcome, {username}!</h1>
+            <div className='flex flex-col w-[1200px] items-center p-7 max-[1199px]:w-full '>
+                <h1 className='text-gray text-4xl font-bold my-10'>Welcome, {username}!</h1>
+
 
                 <input 
                     type="text" 
@@ -58,6 +63,10 @@ const HomePage: React.FC<HomePageProps> = ({username}: HomePageProps) => {
                     value={searchTerm}
                     className='search-input'/>
 
+                <div className='flex flex-row items-center justify-end w-full mt-10 max-md:flex-col'>
+                    <p className='mx-5 text-gray'>Lost or found something?</p>
+                    <PostModal/>
+                </div>
 
                 <div className='flex flex-row w-full gap-7 mt-10 max-md:flex-col max-md:gap-5'>
                     {filteredPosts.length === 0 ? (

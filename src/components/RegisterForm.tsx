@@ -30,7 +30,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({setUsername, setPassword, se
             placeholder='Password'
             onChange={(event)=>setPassword(event.target.value)}
             className='form-info'/>
-          <button type="submit" className='w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition cursor-pointer'>Register</button>
+          <button type="submit" className='w-full primary-button'>Register</button>
         </form>
   )
 }

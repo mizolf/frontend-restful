@@ -22,7 +22,7 @@ const LoginForm: React.FC<LoginFormProps>= ({setUsername, setPassword, handleLog
         placeholder='Password'
         onChange={(event)=>setPassword(event.target.value)}
         className='form-info'/>
-      <button type="submit" className='w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition cursor-pointer'>Login</button>
+      <button type="submit" className='w-full primary-button'>Login</button>
     </form>
   )
 }
