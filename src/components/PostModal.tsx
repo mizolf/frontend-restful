@@ -9,13 +9,17 @@ function PostModal() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [titleValue, setTitleValue] = useState<string>("");
     const [descriptionValue, setDescriptionValue] = useState<string>("");
-    const [alignment, setAlignment] = useState<string>('lost');
+    const [category, setCategory] = useState('Lost');
+    const [image, setImage] = useState<File | null>(null);
+    const [imageBase64, setImageBase64] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
+    const [data, setData] = useState(null);
 
     const handleChange = (
       event: React.MouseEvent<HTMLElement>,
-      newAlignment: string,
+      newCategory: string,
     ) => {
-      setAlignment(newAlignment);
+      setCategory(newCategory);
     };
       
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +30,55 @@ function PostModal() {
         setDescriptionValue(e.target.value);
     }
 
+    const setFileToBase64 = (file: File) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setImageBase64(reader.result as string);
+      };
+    };
+
+    const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if(!file) return;
+      setImage(file);
+      setFileToBase64(file);
+    };
+
+    const handleSubmit = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch("http://localhost:5500/user/post", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              title: titleValue, 
+              body: descriptionValue, 
+              category: category, 
+              image: imageBase64
+            })
+        })
+    
+        const json = await response.json()
+        
+        if(response.ok){
+            setLoading(false)
+            setData(json)
+            setTitleValue("");
+            setDescriptionValue("");
+            setCategory("Lost");
+            setImage(null);
+            setImageBase64("");
+        }
+        
+      } catch (error) {
+        setLoading(false)
+        console.error("Server error:", error)
+      }
+    }
 
   return (
     <>
@@ -53,23 +106,43 @@ function PostModal() {
                     value={descriptionValue}
                 />
 
-                <input type="image" src="" alt="" />
+              <div>
+   
+                <label
+                    htmlFor="profile_image"
+                    className="block font-medium text-gray mb-2">
+                    Upload image
+                </label>
+
+                <input
+                    name="image"
+                    className="border cursor-pointer w-fit rounded-lg border-gray-200 p-3 text-sm mb-2"
+                    placeholder="Image"
+                    type="file"
+                    accept="image/*"
+                    id="image"
+                    onChange={handleImage}
+                />
+                </div>
 
                 <ToggleButtonGroup
                 color="primary"
-                value={alignment}
+                value={category}
                 exclusive
                 onChange={handleChange}
-                aria-label="Platform"
+                aria-label="Category"
                 >
-                <ToggleButton value="lost" color='error'>Lost</ToggleButton>
-                <ToggleButton value="found" color='success'>Found</ToggleButton>
+                <ToggleButton value="Lost" color='error'>Lost</ToggleButton>
+                <ToggleButton value="Found" color='success'>Found</ToggleButton>
                 </ToggleButtonGroup>
 
             </form>
             <div className="flex gap-4 justify-end">
               <button onClick={() => setIsOpen(false)} className='cursor-pointer'>Cancel</button>
-              <button onClick={() => setIsOpen(false)} className='primary-button'>Upload</button>
+              <button onClick={() => {
+                handleSubmit();
+                setIsOpen(false);
+              }} className='primary-button'>Upload</button>
             </div>
           </DialogPanel>
         </div>
