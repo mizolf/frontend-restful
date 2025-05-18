@@ -9,6 +9,10 @@ interface PostType {
     title: string;
     body: string;
     category: string;
+    image?: {
+        publicId: string;
+        url: string;
+    };
     user?: { 
         username: string,
         email: string
@@ -63,17 +67,17 @@ const HomePage: React.FC<HomePageProps> = ({username}: HomePageProps) => {
                     value={searchTerm}
                     className='search-input'/>
 
-                <div className='flex flex-row items-center justify-end w-full mt-10 max-md:flex-col'>
+                <div className='flex flex-row items-center justify-end w-full mt-10 max-md:flex-row max-md:justify-between'>
                     <p className='mx-5 text-gray'>Lost or found something?</p>
                     <PostModal/>
                 </div>
 
-                <div className='flex flex-row w-full gap-7 mt-10 max-md:flex-col max-md:gap-5'>
+                <div className='grid grid-cols-2 gap-7 mt-10 w-full max-md:grid-cols-1 max-md:gap-5'>
                     {filteredPosts.length === 0 ? (
                         <p>No posts found</p>
                     ) : (
                         filteredPosts.map(post =>(
-                            <Post key={post._id} title={post.title} body={post.body} category={post.category} author={post.user?.username} email={post.user?.email}/>
+                            <Post key={post._id} title={post.title} body={post.body} image={post.image?.url} category={post.category} author={post.user?.username} email={post.user?.email}/>
                         ))
                     )}
                 </div>

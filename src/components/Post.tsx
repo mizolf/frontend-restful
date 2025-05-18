@@ -6,13 +6,15 @@ interface PostProps {
     category: string;
     author?: string;
     email?: string;
+    image?: string;
 }
 
-const Post: React.FC<PostProps> = ({title, body, category, author, email}) => {
+const Post: React.FC<PostProps> = ({title, body, image, category, author, email}) => {
   return (
     <div className="flex flex-col w-full h-[500px] p-6 shadow-lg rounded-xl bg-white border border-gray-200">
       <h1 className="text-2xl font-bold text-gray-800 mb-3">{title}</h1>
       <p className="text-gray-700 text-lg leading-relaxed mb-4">{body}</p>
+      <img src={image} alt="" className='w-full h-64 object-cover rounded-lg mb-4' />
       <p className={`text-sm font-semibold uppercase tracking-wide mb-2 
         ${category === 'Lost' ? 'text-red-500' : 'text-green-500'}`}>
         {category}
