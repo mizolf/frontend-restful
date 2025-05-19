@@ -34,12 +34,14 @@ const HomePage: React.FC<HomePageProps> = ({username}: HomePageProps) => {
         setDebouncedSearchTerm(searchTerm);
     }, 500, [searchTerm]);
 
-    useEffect(() => {
+    const fetchPosts = () => {
         fetch("http://localhost:5500/user/posts/")
             .then(response => response.json())
             .then(data => setPosts(data))
             .catch(error => console.error("Error fetching posts:", error));
-    }, []);
+    }
+
+    useEffect(fetchPosts, []);
 
     useEffect(()=>{
         setFilteredPosts(posts.filter(post=>
@@ -53,12 +55,10 @@ const HomePage: React.FC<HomePageProps> = ({username}: HomePageProps) => {
     }
 
 
-
     return (
         <div className='flex flex-col h-svh items-center'>
             <div className='flex flex-col w-[1200px] items-center p-7 max-[1199px]:w-full '>
                 <h1 className='text-gray text-4xl font-bold my-10'>Welcome, {username}!</h1>
-
 
                 <input 
                     type="text" 
@@ -69,7 +69,7 @@ const HomePage: React.FC<HomePageProps> = ({username}: HomePageProps) => {
 
                 <div className='flex flex-row items-center justify-end w-full mt-10 max-md:flex-row max-md:justify-between'>
                     <p className='mx-5 text-gray'>Lost or found something?</p>
-                    <PostModal/>
+                    <PostModal onPostCreated={fetchPosts}/>
                 </div>
 
                 <div className='grid grid-cols-2 gap-7 mt-10 w-full max-md:grid-cols-1 max-md:gap-5'>

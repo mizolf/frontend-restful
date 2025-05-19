@@ -5,7 +5,11 @@ import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-function PostModal() {
+interface PostModalProps {
+    onPostCreated: () => void;
+}
+
+function PostModal({ onPostCreated } : PostModalProps) {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [titleValue, setTitleValue] = useState<string>("");
     const [descriptionValue, setDescriptionValue] = useState<string>("");
@@ -67,6 +71,7 @@ function PostModal() {
         if(response.ok){
             setLoading(false)
             setData(json)
+            onPostCreated();
             setTitleValue("");
             setDescriptionValue("");
             setCategory("Lost");
