@@ -23,17 +23,13 @@ const Header: React.FC<HeaderProps> = ({isLoggedIn, handleLogout}: HeaderProps) 
   }`}>
         <ul className='flex flex-col md:flex-row md:gap-10 text-gray'>
           <li className='header-item'>Home</li>
-          <li className='header-item'>Lost items</li>
-          <li className='header-item'>Found items</li>
+          <li className='header-item'>My Profile</li>
+          <li className='header-item'>About</li>
         </ul>
       </nav>
 
       {isLoggedIn ? (
         <div className="hidden md:flex profile-icon flex-row items-center">
-          <span className='text-gray text-md font-bold'>Profile</span>
-          <button className='mx-2 cursor-pointer'>
-            <img src="profile-icon.png" alt="Profile"/>
-          </button>
           <button className='h-[32px] w-[32px] cursor-pointer' onClick={handleLogout}>
             <img src="logout.png" alt="Profile"/>
           </button>
