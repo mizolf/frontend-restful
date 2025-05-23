@@ -1,4 +1,5 @@
 import React from 'react'
+import KebabMenu from './KebabMenu';
 
 interface PostProps {
     title: string;
@@ -12,7 +13,11 @@ interface PostProps {
 const Post: React.FC<PostProps> = ({title, body, image, category, author, email}) => {
   return (
     <div className="flex flex-col w-full h-[500px] p-6 shadow-lg rounded-xl bg-white border border-gray-200 overflow-y-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-2">{title}</h1>
+      
+      <div className='flex justify-between'>
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">{title}</h1>
+        <KebabMenu/>
+      </div>
       <p className="text-gray-700 text-md leading-relaxed mb-4">{body}</p>
       <img src={image} alt="" className='w-full h-[60%] object-cover rounded-lg mb-4' />
       <p className={`text-sm font-semibold uppercase tracking-wide mb-2 
