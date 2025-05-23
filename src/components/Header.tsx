@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps{
   isLoggedIn: boolean;
@@ -12,7 +13,7 @@ const Header: React.FC<HeaderProps> = ({isLoggedIn, handleLogout}: HeaderProps) 
 
   return (
     <header className='bg-white shadow-md p-4 flex justify-between items-center md:px-8'>
-      <h1 className='font-bold text-2xl text-gray cursor-pointer'>Lost & Found</h1>
+      <h1 className='font-bold text-2xl text-gray cursor-pointer'><Link to="/">Lost & Found</Link></h1>
       
       {isLoggedIn && (
         <>
@@ -24,9 +25,15 @@ const Header: React.FC<HeaderProps> = ({isLoggedIn, handleLogout}: HeaderProps) 
             isOpen ? 'block' : 'hidden'
           }`}>
             <ul className="flex flex-col md:flex-row md:gap-10 text-gray">
-              <li className="header-item">Home</li>
-              <li className="header-item">My Profile</li>
-              <li className="header-item">About</li>
+              <li className="header-item">
+                <Link to="/">Home</Link>
+              </li>
+              <li className="header-item">
+                <Link to="/my-profile">My Profile</Link>
+              </li>
+              <li className="header-item">
+                <Link to="/about">About</Link>
+              </li>
             </ul>
           </nav>
 

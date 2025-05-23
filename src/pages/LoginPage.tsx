@@ -2,7 +2,8 @@ import * as React from 'react';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
 import { useState } from 'react';
-import HomePage from './HomePage';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 interface LoginCredentials {
   username: string;
@@ -15,17 +16,12 @@ interface RegisterCredentials {
   password: string;
 }
 
-interface LoginPageProps{
-    isLoggedIn: boolean;
-    username: string
-    setIsLoggedIn: (isLoggedIn: boolean)=>void;
-    setUsername: (username: string) => void;
-}
-
-const LoginPage: React.FC<LoginPageProps> = ({ isLoggedIn, setIsLoggedIn, username, setUsername }: LoginPageProps) => {
-
+const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { setIsLoggedIn, setUsername } = useAuth();
   const [password, setPassword] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [username, setUsernameLocal] = useState<string>('');
   const [login, setLogin] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -35,7 +31,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ isLoggedIn, setIsLoggedIn, userna
       const data = await loginUser({ username, password });
       setPassword('');
       setErrorMessage('');
-      if (data) setIsLoggedIn(true);
+      if (data) {
+        setUsername(username);
+        setIsLoggedIn(true);
+        navigate('/');
+      }
     } catch (error) {
       console.error("Login failed:", error);
     }
@@ -89,8 +89,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ isLoggedIn, setIsLoggedIn, userna
         setErrorMessage(data.message || "Registration error");
         throw new Error(data.message || "Registration error");
       }
-        
-
       return data;
     } catch (error) {
       if (error instanceof Error) {
@@ -112,9 +110,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ isLoggedIn, setIsLoggedIn, userna
           </div>
         }
         {login ? (
-          <LoginForm setUsername={setUsername} setPassword={setPassword} handleLoginSubmit={handleLoginSubmit} />
+          <LoginForm setUsername={setUsernameLocal} setPassword={setPassword} handleLoginSubmit={handleLoginSubmit} />
         ) : (
-          <RegisterForm setEmail={setEmail} setUsername={setUsername} setPassword={setPassword} handleRegisterSubmit={handleRegisterSubmit} />
+          <RegisterForm setEmail={setEmail} setUsername={setUsernameLocal} setPassword={setPassword} handleRegisterSubmit={handleRegisterSubmit} />
         )}
 
         <div className="mt-4 text-center">
