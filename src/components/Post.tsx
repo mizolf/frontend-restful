@@ -14,7 +14,7 @@ const Post: React.FC<PostProps> = ({title, body, image, category, author, email}
   return (
     <div className="flex flex-col w-full h-[500px] p-6 shadow-lg rounded-xl bg-white border border-gray-200 overflow-y-auto">
       
-      <div className='flex justify-between'>
+      <div className='flex flex-row justify-between align-center mb-4'>
         <h1 className="text-2xl font-bold text-gray-800 mb-2">{title}</h1>
         <KebabMenu/>
       </div>
