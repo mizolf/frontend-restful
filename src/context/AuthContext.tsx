@@ -10,6 +10,7 @@ interface AuthContextType {
   setUsername: (value: string) => void;
   setEmail: (value: string) => void;
   setJoinedAt: (value: string) => void;
+  fetchProfile: () => Promise<void>; 
   handleLogout: () => Promise<void>;
 }
 
@@ -21,32 +22,32 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [email, setEmail] = useState('');
   const [joinedAt, setJoinedAt] = useState('');
   const navigate = useNavigate();
-  
-  useEffect(() => {
-    
-      const fetchProfile = async () => {
-        try {
-          const response = await fetch('http://localhost:5500/user/profile', {
-            method: 'GET',
-            credentials: 'include',
-          });
-          const data = await response.json();
-          if (!response.ok) throw new Error(data.message || "Failed to fetch profile");
-          
-          setUsername(data.username);
-          setEmail(data.email);
-          setJoinedAt(new Date(data.createdAt).toLocaleDateString());
-          setIsLoggedIn(true);
-    
-          console.log("Profile page auth data:", { username, email, joinedAt });
-        } catch (error) {
-          console.error("Error loading user profile:", error);
-          setIsLoggedIn(false);
-        }
-      };
-    fetchProfile();
-  }, []);
-  
+
+  const fetchProfile = async () => {
+    try {
+      const response = await fetch('http://localhost:5500/user/profile', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) throw new Error(data.message || "Failed to fetch profile");
+      
+      setUsername(data.username);
+      setEmail(data.email);
+      setJoinedAt(new Date(data.createdAt).toLocaleDateString());
+      setIsLoggedIn(true);
+
+    } catch (error) {
+      console.error("Error loading user profile:", error);
+      setIsLoggedIn(false);
+      setUsername('');
+      setEmail('');
+      setJoinedAt('');
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await fetch('http://localhost:5500/user/logout', {
@@ -74,6 +75,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setUsername,
         setEmail,
         setJoinedAt,
+        fetchProfile, 
         handleLogout,
       }}
     >

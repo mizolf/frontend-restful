@@ -26,7 +26,6 @@ const HomePage: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [filteredPosts, setFilteredPosts] = useState<PostType[]>([]);
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>(searchTerm);
-    const [titleValue, setTitleValue] = useState<string>("");
 
     useDebounce(() => {
         setDebouncedSearchTerm(searchTerm);

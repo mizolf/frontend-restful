@@ -3,16 +3,16 @@ import { useAuth } from '../context/AuthContext';
 import Post from '../components/Post';
 
 const ProfilePage: React.FC = () => {
-  const { username, email, joinedAt } = useAuth();
+  const { username, email, joinedAt, fetchProfile, isLoggedIn } = useAuth();
   const [userPosts, setUserPosts] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
-  //Potrebno popraviti ovu funkciju tako da se ne poziva prije logina
   const fetchMyPosts = async () => {
     try {
       const res = await fetch("http://localhost:5500/user/my-posts", {
         credentials: 'include',
       });
-
+      
       if (!res.ok) {
         const text = await res.text();
         console.error("Error response text:", text);
@@ -27,9 +27,34 @@ const ProfilePage: React.FC = () => {
   };
 
   useEffect(() => {
-    
-    fetchMyPosts();
-  }, []);
+    const loadProfileData = async () => {
+      setLoading(true);
+      
+      await fetchProfile();
+      
+      await fetchMyPosts();
+      
+      setLoading(false);
+    };
+
+    loadProfileData();
+  }, []); 
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-xl">Loading profile...</div>
+      </div>
+    );
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-xl">Please log in to view your profile.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center mt-10 px-4">
@@ -41,26 +66,26 @@ const ProfilePage: React.FC = () => {
           <p><span className="font-semibold">Joined at:</span> {joinedAt}</p>
         </div>
       </div>
-
-
-      <div className='flex flex-col w-[1200px]  p-7 max-[1199px]:w-full'>
-      <h2 className="text-3xl font-bold mb-6 text-left text-gray">My Posts</h2>
-
-      <div className='grid grid-cols-2 gap-7 mt-10 w-full max-md:grid-cols-1 max-md:gap-5'>
-        {userPosts.length === 0 ? (
-              <p>No posts found</p>
+      
+      <div className='flex flex-col w-[1200px] p-7 max-[1199px]:w-full'>
+        <h2 className="text-3xl font-bold mb-6 text-left text-gray">My Posts</h2>
+        <div className='grid grid-cols-2 gap-7 mt-10 w-full max-md:grid-cols-1 max-md:gap-5'>
+          {userPosts.length === 0 ? (
+            <p>No posts found</p>
           ) : (
-            userPosts.map(post =>(
-                  <Post key={post._id} 
-                  title={post.title} 
-                  body={post.body} 
-                  image={post.image?.url} 
-                  category={post.category} 
-                  author={post.user?.username} 
-                  email={post.user?.email}/>
-              ))
+            userPosts.map(post => (
+              <Post 
+                key={post._id}
+                title={post.title}
+                body={post.body}
+                image={post.image?.url}
+                category={post.category}
+                author={post.user?.username}
+                email={post.user?.email}
+              />
+            ))
           )}
-      </div>
+        </div>
       </div>
     </div>
   );
