@@ -8,15 +8,16 @@ interface PostProps {
     author?: string;
     email?: string;
     image?: string;
+    showKebabMenu?: boolean;
 }
 
-const Post: React.FC<PostProps> = ({title, body, image, category, author, email}) => {
+const Post: React.FC<PostProps> = ({title, body, image, category, author, email, showKebabMenu}) => {
   return (
     <div className="flex flex-col w-full h-[500px] p-6 shadow-lg rounded-xl bg-white border border-gray-200 overflow-y-auto">
       
       <div className='flex flex-row justify-between align-center mb-4'>
         <h1 className="text-2xl font-bold text-gray-800 mb-2">{title}</h1>
-        <KebabMenu/>
+        {showKebabMenu && <KebabMenu/>}
       </div>
       <p className="text-gray-700 text-md leading-relaxed mb-4">{body}</p>
       <img src={image} alt="" className='w-full h-[60%] object-cover rounded-lg mb-4' />

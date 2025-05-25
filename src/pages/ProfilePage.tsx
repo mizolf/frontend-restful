@@ -82,6 +82,7 @@ const ProfilePage: React.FC = () => {
                 category={post.category}
                 author={post.user?.username}
                 email={post.user?.email}
+                showKebabMenu={true}
               />
             ))
           )}

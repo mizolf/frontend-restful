@@ -73,7 +73,14 @@ const HomePage: React.FC = () => {
                         <p>No posts found</p>
                     ) : (
                         filteredPosts.map(post =>(
-                            <Post key={post._id} title={post.title} body={post.body} image={post.image?.url} category={post.category} author={post.user?.username} email={post.user?.email}/>
+                            <Post key={post._id} 
+                            title={post.title} 
+                            body={post.body} 
+                            image={post.image?.url} 
+                            category={post.category} 
+                            author={post.user?.username} 
+                            email={post.user?.email}
+                            />
                         ))
                     )}
                 </div>
