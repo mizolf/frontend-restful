@@ -56,6 +56,26 @@ const ProfilePage: React.FC = () => {
     );
   }
 
+  const handleDeletePost = async (postId: string) => {
+  try {
+    const res = await fetch(`http://localhost:5500/user/posts/${postId}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("Error response text:", text);
+      throw new Error(`Failed to delete post: ${res.status}`);
+    }
+
+    
+    setUserPosts(prev => prev.filter(post => post._id !== postId));
+  } catch (err) {
+    console.error("Error deleting post:", err);
+  }
+};
+
   return (
     <div className="flex flex-col items-center mt-10 px-4">
       <div className="bg-white shadow-lg rounded-2xl p-10 w-full max-w-3xl text-gray-800">
@@ -82,6 +102,7 @@ const ProfilePage: React.FC = () => {
                 category={post.category}
                 author={post.user?.username}
                 email={post.user?.email}
+                onDelete={() => handleDeletePost(post._id)}
                 showKebabMenu={true}
               />
             ))

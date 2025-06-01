@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-const KebabMenu: React.FC = () => {
+interface KebabMenuProps {
+  onDelete?: () => void;  
+  onEdit?: () => void;
+}
+
+const KebabMenu: React.FC<KebabMenuProps> = ({onDelete, onEdit}) => {
   const [active, setActive] = useState<boolean>(false);
 
   const toggleMenu = () => {
@@ -8,13 +13,33 @@ const KebabMenu: React.FC = () => {
   };
 
   return (
-<div className="kebab" onClick={toggleMenu}>
+    <div className="kebab" onClick={toggleMenu}>
       <figure></figure>
       <figure className={`middle ${active ? 'active' : ''}`}></figure>
       <figure></figure>
-      <ul className={`dropdown ${active ? 'active' : ''}`}>
-        <li><a href="#">Edit post</a></li>
-        <li><a href="#">Delete post</a></li>
+      <ul className={`dropdown ${active ? 'active' : ''}`} onClick={(e) => e.stopPropagation()}>
+        <li>
+          <button
+            onClick={() => {
+              if (onEdit) onEdit();
+              setActive(false);
+            }}
+            className="dropdown-item"
+          >
+            Edit post
+          </button>
+        </li>
+        <li>
+          <button
+            onClick={() => {
+              if (onDelete) onDelete();
+              setActive(false);
+            }}
+            className="dropdown-item"
+          >
+            Delete post
+          </button>
+        </li>
       </ul>
     </div>
   );
