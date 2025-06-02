@@ -10,15 +10,16 @@ interface PostProps {
     image?: string;
     showKebabMenu?: boolean;
     onDelete?: () => void;
+    onEdit?: () => void;
 }
 
-const Post: React.FC<PostProps> = ({title, body, image, category, author, email, showKebabMenu, onDelete}) => {
+const Post: React.FC<PostProps> = ({title, body, image, category, author, email, showKebabMenu, onDelete, onEdit }) => {
   return (
     <div className="flex flex-col w-full h-[550px] p-6 shadow-lg rounded-xl bg-white border border-gray-200 overflow-y-auto">
       
       <div className='flex flex-row justify-between align-center mb-4'>
         <h1 className="text-2xl font-bold text-gray-800 mb-2">{title}</h1>
-        {showKebabMenu && <KebabMenu onDelete={onDelete}/>}
+        {showKebabMenu && <KebabMenu onDelete={onDelete} onEdit={onEdit}/>}
       </div>
       <p className="text-gray-700 text-md leading-relaxed mb-4">{body}</p>
       <img src={image} alt="" className='w-full h-[60%] object-cover rounded-lg mb-4' />

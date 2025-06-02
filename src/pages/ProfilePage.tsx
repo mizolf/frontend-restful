@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Post from '../components/Post';
+import EditPostModal from '../components/EditPostModal';
 
 const ProfilePage: React.FC = () => {
   const { username, email, joinedAt, fetchProfile, isLoggedIn } = useAuth();
   const [userPosts, setUserPosts] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+  const [postToEdit, setPostToEdit] = React.useState<any>(null);
 
   const fetchMyPosts = async () => {
     try {
@@ -57,59 +60,82 @@ const ProfilePage: React.FC = () => {
   }
 
   const handleDeletePost = async (postId: string) => {
-  try {
-    const res = await fetch(`http://localhost:5500/user/posts/${postId}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    });
+    try {
+      const res = await fetch(`http://localhost:5500/user/posts/${postId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
 
-    if (!res.ok) {
-      const text = await res.text();
-      console.error("Error response text:", text);
-      throw new Error(`Failed to delete post: ${res.status}`);
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Error response text:", text);
+        throw new Error(`Failed to delete post: ${res.status}`);
+      }
+
+      setUserPosts(prev => prev.filter(post => post._id !== postId));
+    } catch (err) {
+      console.error("Error deleting post:", err);
     }
+  };
 
-    
-    setUserPosts(prev => prev.filter(post => post._id !== postId));
-  } catch (err) {
-    console.error("Error deleting post:", err);
-  }
-};
+  const handleEditPost = (post: any) => {
+    setPostToEdit(post);
+    setIsEditModalOpen(true);
+  };
+
+  const handlePostUpdated = () => {
+    fetchMyPosts();
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setPostToEdit(null);
+  };
 
   return (
-    <div className="flex flex-col items-center mt-10 px-4">
-      <div className="bg-white shadow-lg rounded-2xl p-10 w-full max-w-3xl text-gray-800">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray">My Profile</h2>
-        <div className="space-y-4 text-lg flex flex-row justify-between">
-          <p><span className="font-semibold">Username:</span> {username}</p>
-          <p><span className="font-semibold">Email:</span> {email}</p>
-          <p><span className="font-semibold">Joined at:</span> {joinedAt}</p>
+    <>
+      <div className="flex flex-col items-center mt-10 px-4">
+        <div className="bg-white shadow-lg rounded-2xl p-10 w-full max-w-3xl text-gray-800">
+          <h2 className="text-3xl font-bold mb-6 text-center text-gray">My Profile</h2>
+          <div className="space-y-4 text-lg flex flex-row justify-between">
+            <p><span className="font-semibold">Username:</span> {username}</p>
+            <p><span className="font-semibold">Email:</span> {email}</p>
+            <p><span className="font-semibold">Joined at:</span> {joinedAt}</p>
+          </div>
+        </div>
+        
+        <div className='flex flex-col w-[1200px] p-7 max-[1199px]:w-full'>
+          <h2 className="text-3xl font-bold mb-6 text-left text-gray">My Posts</h2>
+          <div className='grid grid-cols-2 gap-7 mt-10 w-full max-md:grid-cols-1 max-md:gap-5'>
+            {userPosts.length === 0 ? (
+              <p>No posts found</p>
+            ) : (
+              userPosts.map(post => (
+                <Post 
+                  key={post._id}
+                  title={post.title}
+                  body={post.body}
+                  image={post.image?.url}
+                  category={post.category}
+                  author={post.user?.username}
+                  email={post.user?.email}
+                  onDelete={() => handleDeletePost(post._id)}
+                  onEdit={() => handleEditPost(post)}
+                  showKebabMenu={true}
+                />
+              ))
+            )}
+          </div>
         </div>
       </div>
-      
-      <div className='flex flex-col w-[1200px] p-7 max-[1199px]:w-full'>
-        <h2 className="text-3xl font-bold mb-6 text-left text-gray">My Posts</h2>
-        <div className='grid grid-cols-2 gap-7 mt-10 w-full max-md:grid-cols-1 max-md:gap-5'>
-          {userPosts.length === 0 ? (
-            <p>No posts found</p>
-          ) : (
-            userPosts.map(post => (
-              <Post 
-                key={post._id}
-                title={post.title}
-                body={post.body}
-                image={post.image?.url}
-                category={post.category}
-                author={post.user?.username}
-                email={post.user?.email}
-                onDelete={() => handleDeletePost(post._id)}
-                showKebabMenu={true}
-              />
-            ))
-          )}
-        </div>
-      </div>
-    </div>
+
+      <EditPostModal
+        isOpen={isEditModalOpen}
+        onClose={handleCloseEditModal}
+        onPostUpdated={handlePostUpdated}
+        post={postToEdit}
+      />
+    </>
   );
 };
 

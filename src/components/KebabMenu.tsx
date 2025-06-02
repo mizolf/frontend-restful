@@ -28,7 +28,7 @@ const KebabMenu: React.FC<KebabMenuProps> = ({onDelete, onEdit}) => {
           >
             Edit post
           </button>
-        </li>
+        </li> 
         <li>
           <button
             onClick={() => {
