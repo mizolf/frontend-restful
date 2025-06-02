@@ -97,7 +97,7 @@ const ProfilePage: React.FC = () => {
       <div className="flex flex-col items-center mt-10 px-4">
         <div className="bg-white shadow-lg rounded-2xl p-10 w-full max-w-3xl text-gray-800">
           <h2 className="text-3xl font-bold mb-6 text-center text-gray">My Profile</h2>
-          <div className="space-y-4 text-lg flex flex-row justify-between">
+          <div className="space-y-4 text-lg flex flex-row justify-between max-md:flex-col max-md:items-center">
             <p><span className="font-semibold">Username:</span> {username}</p>
             <p><span className="font-semibold">Email:</span> {email}</p>
             <p><span className="font-semibold">Joined at:</span> {joinedAt}</p>
