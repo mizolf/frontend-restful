@@ -7,7 +7,7 @@ interface RegisterFormProps{
       handleRegisterSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const RegisterForm: React.FC<RegisterFormProps> = ({setUsername, setPassword, setEmail, handleRegisterSubmit}: RegisterFormProps) => {
+const RegisterForm: React.FC<RegisterFormProps> = ({setUsername, setPassword, setEmail, handleRegisterSubmit}) => {
   return (
     <form onSubmit={handleRegisterSubmit} className='flex flex-col items-center w-[350px] gap-2 space-y-4'>
         <input 

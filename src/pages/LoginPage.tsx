@@ -121,7 +121,6 @@ const LoginPage: React.FC = () => {
             <button
                 className="text-blue-600 ml-1 cursor-pointer hover:underline"
                 onClick={() =>{ 
-                  setErrorMessage('');
                   setLogin(!login);
                 }}
             >
